@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
 import { changeLanguage } from '../i18n'
@@ -98,6 +98,15 @@ export function LoginPage() {
           >
             {submitting ? t('login.submitting') : t('login.submit')}
           </button>
+
+          <div className="text-center pt-1">
+            <Link
+              to="/"
+              className="text-xs font-medium text-slate-500 hover:text-brand-700"
+            >
+              {t('login.continueAsGuest')}
+            </Link>
+          </div>
         </form>
 
         <div className="mt-6 text-xs text-slate-500 bg-white border border-dashed border-slate-300 rounded-lg p-4">

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthContext'
 import { ProtectedRoute } from './auth/ProtectedRoute'
 import { Navbar } from './components/Navbar'
@@ -13,14 +13,20 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="*"
-            element={
-              <ProtectedRoute>
-                <AppShell />
-              </ProtectedRoute>
-            }
-          />
+          <Route element={<AppShell />}>
+            {/* public — guests can view */}
+            <Route path="/" element={<BoardPage />} />
+            <Route path="/projects/:id" element={<ProjectDetailPage />} />
+            {/* protected — needs to be logged in */}
+            <Route
+              path="/members"
+              element={
+                <ProtectedRoute>
+                  <MembersPage />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
@@ -32,11 +38,7 @@ function AppShell() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1 flex flex-col min-h-0">
-        <Routes>
-          <Route path="/" element={<BoardPage />} />
-          <Route path="/projects/:id" element={<ProjectDetailPage />} />
-          <Route path="/members" element={<MembersPage />} />
-        </Routes>
+        <Outlet />
       </main>
     </div>
   )

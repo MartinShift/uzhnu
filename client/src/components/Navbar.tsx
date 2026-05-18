@@ -33,7 +33,7 @@ export function Navbar() {
 
           <nav className="flex items-center gap-1">
             <TabLink to="/">{t('nav.board')}</TabLink>
-            <TabLink to="/members">{t('nav.members')}</TabLink>
+            {user && <TabLink to="/members">{t('nav.members')}</TabLink>}
           </nav>
         </div>
 
@@ -47,7 +47,7 @@ export function Navbar() {
             </LanguageButton>
           </div>
 
-          {user && (
+          {user ? (
             <div className="flex items-center gap-2 pl-4 border-l border-slate-200">
               <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 text-xs font-semibold flex items-center justify-center">
                 {initials(user.name)}
@@ -66,6 +66,16 @@ export function Navbar() {
               >
                 {t('nav.logout')}
               </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 pl-4 border-l border-slate-200">
+              <span className="text-xs text-slate-500 hidden sm:inline">{t('nav.guest')}</span>
+              <Link
+                to="/login"
+                className="px-3 py-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm"
+              >
+                {t('nav.login')}
+              </Link>
             </div>
           )}
         </div>

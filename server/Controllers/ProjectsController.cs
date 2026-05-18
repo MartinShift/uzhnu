@@ -18,6 +18,7 @@ public class ProjectsController : ControllerBase
     public ProjectsController(AppDbContext db) => _db = db;
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAll()
     {
         var projects = await _db.Projects
@@ -32,6 +33,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     public async Task<ActionResult<ProjectDto>> GetById(int id)
     {
         var project = await LoadAsync(id);

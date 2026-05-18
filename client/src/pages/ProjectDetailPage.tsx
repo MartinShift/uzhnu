@@ -7,6 +7,7 @@ import type { Member, Priority, Project, Role, Stage } from '../types'
 import { PRIORITIES, STAGES } from '../types'
 import { priorityDot } from '../components/priority'
 import { AssigneeDropdown } from '../components/AssigneeDropdown'
+import { useAuth } from '../auth/AuthContext'
 
 const roleStyles: Record<Role, string> = {
   Architect:   'bg-brand-50 text-brand-700 border-brand-200',
@@ -19,6 +20,8 @@ export function ProjectDetailPage() {
   const projectId = Number(id)
   const navigate = useNavigate()
   const { t, i18n } = useTranslation()
+  const { user } = useAuth()
+  const isGuest = !user
 
   const [project, setProject] = useState<Project | null>(null)
   const [members, setMembers] = useState<Member[]>([])
@@ -191,18 +194,32 @@ export function ProjectDetailPage() {
             {t('detail.back')}
           </Link>
           <div className="flex items-center gap-3">
-            {savedAt && (
+            {savedAt && !isGuest && (
               <span className="text-xs text-emerald-600">{t('detail.saved')}</span>
             )}
-            <button
-              onClick={handleSave}
-              disabled={saving || !title.trim()}
-              className="px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50"
-            >
-              {t('detail.save')}
-            </button>
+            {!isGuest && (
+              <button
+                onClick={handleSave}
+                disabled={saving || !title.trim()}
+                className="px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50"
+              >
+                {t('detail.save')}
+              </button>
+            )}
           </div>
         </div>
+
+        {isGuest && (
+          <div className="mb-4 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-md px-4 py-2.5">
+            <p className="text-sm text-amber-800">{t('detail.guestBanner')}</p>
+            <Link
+              to={`/login?next=${encodeURIComponent(`/projects/${projectId}`)}`}
+              className="shrink-0 px-3 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md"
+            >
+              {t('nav.login')}
+            </Link>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           <div className="space-y-6">
@@ -211,7 +228,8 @@ export function ProjectDetailPage() {
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder={t('detail.title')}
-                className="block w-full text-2xl font-semibold text-slate-900 bg-transparent border-0 border-b border-transparent focus:border-brand-400 focus:outline-none pb-2 mb-4"
+                readOnly={isGuest}
+                className="block w-full text-2xl font-semibold text-slate-900 bg-transparent border-0 border-b border-transparent focus:border-brand-400 focus:outline-none pb-2 mb-4 read-only:cursor-default"
               />
 
               <Field label={t('detail.description')}>
@@ -220,6 +238,7 @@ export function ProjectDetailPage() {
                   onChange={e => setDescription(e.target.value)}
                   rows={5}
                   placeholder={t('detail.descriptionPlaceholder')}
+                  readOnly={isGuest}
                   className="detail-input resize-none"
                 />
               </Field>
@@ -246,36 +265,40 @@ export function ProjectDetailPage() {
                         {a.url}
                       </a>
                     </div>
-                    <button
-                      onClick={() => removeAttachment(a.id)}
-                      className="ml-3 text-slate-400 hover:text-red-600 text-sm shrink-0"
-                    >
-                      ×
-                    </button>
+                    {!isGuest && (
+                      <button
+                        onClick={() => removeAttachment(a.id)}
+                        className="ml-3 text-slate-400 hover:text-red-600 text-sm shrink-0"
+                      >
+                        ×
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <input
-                  value={newAttLabel}
-                  onChange={e => setNewAttLabel(e.target.value)}
-                  placeholder={t('detail.attachmentLabel')}
-                  className="detail-input sm:flex-1"
-                />
-                <input
-                  value={newAttUrl}
-                  onChange={e => setNewAttUrl(e.target.value)}
-                  placeholder={t('detail.attachmentUrl')}
-                  className="detail-input sm:flex-[2]"
-                />
-                <button
-                  onClick={addAttachment}
-                  disabled={!newAttLabel.trim() || !newAttUrl.trim()}
-                  className="px-3 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50"
-                >
-                  {t('detail.addAttachment')}
-                </button>
-              </div>
+              {!isGuest && (
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <input
+                    value={newAttLabel}
+                    onChange={e => setNewAttLabel(e.target.value)}
+                    placeholder={t('detail.attachmentLabel')}
+                    className="detail-input sm:flex-1"
+                  />
+                  <input
+                    value={newAttUrl}
+                    onChange={e => setNewAttUrl(e.target.value)}
+                    placeholder={t('detail.attachmentUrl')}
+                    className="detail-input sm:flex-[2]"
+                  />
+                  <button
+                    onClick={addAttachment}
+                    disabled={!newAttLabel.trim() || !newAttUrl.trim()}
+                    className="px-3 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50"
+                  >
+                    {t('detail.addAttachment')}
+                  </button>
+                </div>
+              )}
             </Section>
 
             <Section label={t('detail.comments')}>
@@ -301,35 +324,46 @@ export function ProjectDetailPage() {
                           )}
                         </span>
                       </div>
-                      <button
-                        onClick={() => removeComment(c.id)}
-                        className="text-slate-300 hover:text-red-600 text-sm"
-                      >
-                        ×
-                      </button>
+                      {!isGuest && (
+                        <button
+                          onClick={() => removeComment(c.id)}
+                          className="text-slate-300 hover:text-red-600 text-sm"
+                        >
+                          ×
+                        </button>
+                      )}
                     </div>
                     <p className="text-sm text-slate-700 whitespace-pre-wrap pl-9">{c.text}</p>
                   </li>
                 ))}
               </ul>
-              <form onSubmit={postComment} className="space-y-2">
-                <textarea
-                  value={commentText}
-                  onChange={e => setCommentText(e.target.value)}
-                  placeholder={t('detail.commentPlaceholder')}
-                  rows={3}
-                  className="detail-input resize-none"
-                />
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    disabled={postingComment || !commentText.trim()}
-                    className="px-3 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50"
-                  >
-                    {t('detail.post')}
-                  </button>
-                </div>
-              </form>
+              {isGuest ? (
+                <Link
+                  to={`/login?next=${encodeURIComponent(`/projects/${projectId}`)}`}
+                  className="inline-block text-xs font-medium text-brand-700 hover:text-brand-800"
+                >
+                  {t('detail.loginToComment')}
+                </Link>
+              ) : (
+                <form onSubmit={postComment} className="space-y-2">
+                  <textarea
+                    value={commentText}
+                    onChange={e => setCommentText(e.target.value)}
+                    placeholder={t('detail.commentPlaceholder')}
+                    rows={3}
+                    className="detail-input resize-none"
+                  />
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={postingComment || !commentText.trim()}
+                      className="px-3 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50"
+                    >
+                      {t('detail.post')}
+                    </button>
+                  </div>
+                </form>
+              )}
             </Section>
           </div>
 
@@ -339,6 +373,7 @@ export function ProjectDetailPage() {
                 <select
                   value={stage}
                   onChange={e => setStage(e.target.value as Stage)}
+                  disabled={isGuest}
                   className="detail-input"
                 >
                   {STAGES.map(s => (
@@ -353,6 +388,7 @@ export function ProjectDetailPage() {
                   <select
                     value={priority}
                     onChange={e => setPriority(e.target.value as Priority)}
+                    disabled={isGuest}
                     className="detail-input flex-1"
                   >
                     {PRIORITIES.map(p => (
@@ -366,6 +402,7 @@ export function ProjectDetailPage() {
                 <input
                   value={clientName}
                   onChange={e => setClientName(e.target.value)}
+                  readOnly={isGuest}
                   className="detail-input"
                 />
               </SidebarField>
@@ -375,6 +412,7 @@ export function ProjectDetailPage() {
                   type="date"
                   value={dueDate}
                   onChange={e => setDueDate(e.target.value)}
+                  readOnly={isGuest}
                   className="detail-input"
                 />
               </SidebarField>
@@ -396,41 +434,47 @@ export function ProjectDetailPage() {
                   {project.members.map(m => (
                     <span
                       key={m.id}
-                      className={`inline-flex items-center gap-1 text-xs font-medium pl-2 pr-1 py-1 rounded-full border ${roleStyles[m.role]}`}
+                      className={`inline-flex items-center gap-1 text-xs font-medium pl-2 ${isGuest ? 'pr-2' : 'pr-1'} py-1 rounded-full border ${roleStyles[m.role]}`}
                       title={t(`role.${m.role}`)}
                     >
                       {m.name}
-                      <button
-                        type="button"
-                        onClick={() => unassignMember(m.id)}
-                        className="ml-1 w-4 h-4 rounded-full hover:bg-white/60 flex items-center justify-center text-slate-500 hover:text-red-600"
-                        aria-label="Remove"
-                      >
-                        ×
-                      </button>
+                      {!isGuest && (
+                        <button
+                          type="button"
+                          onClick={() => unassignMember(m.id)}
+                          className="ml-1 w-4 h-4 rounded-full hover:bg-white/60 flex items-center justify-center text-slate-500 hover:text-red-600"
+                          aria-label="Remove"
+                        >
+                          ×
+                        </button>
+                      )}
                     </span>
                   ))}
                 </div>
               )}
 
-              {members.length === 0 ? (
-                <p className="text-xs text-slate-500">{t('detail.noMembersHint')}</p>
-              ) : availableMembers.length === 0 ? (
-                <p className="text-xs text-slate-400 italic">{t('detail.noAvailableMembers')}</p>
-              ) : (
-                <AssigneeDropdown
-                  available={availableMembers}
-                  onPick={id => void assignMember(id)}
-                />
+              {!isGuest && (
+                members.length === 0 ? (
+                  <p className="text-xs text-slate-500">{t('detail.noMembersHint')}</p>
+                ) : availableMembers.length === 0 ? (
+                  <p className="text-xs text-slate-400 italic">{t('detail.noAvailableMembers')}</p>
+                ) : (
+                  <AssigneeDropdown
+                    available={availableMembers}
+                    onPick={id => void assignMember(id)}
+                  />
+                )
               )}
             </SidebarCard>
 
-            <button
-              onClick={handleDelete}
-              className="w-full px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md border border-red-200"
-            >
-              {t('detail.delete')}
-            </button>
+            {!isGuest && (
+              <button
+                onClick={handleDelete}
+                className="w-full px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md border border-red-200"
+              >
+                {t('detail.delete')}
+              </button>
+            )}
           </aside>
         </div>
       </div>
@@ -450,6 +494,12 @@ export function ProjectDetailPage() {
         .detail-input:focus {
           border-color: rgb(13 148 136);
           box-shadow: 0 0 0 3px rgb(204 251 241);
+        }
+        .detail-input:read-only,
+        .detail-input:disabled {
+          background-color: rgb(248 250 252);
+          color: rgb(71 85 105);
+          cursor: default;
         }
       `}</style>
     </div>

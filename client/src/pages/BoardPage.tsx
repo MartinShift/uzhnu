@@ -7,10 +7,13 @@ import type { Project, Stage } from '../types'
 import { STAGES } from '../types'
 import { Column } from '../components/Column'
 import { CreateProjectModal } from '../components/CreateProjectModal'
+import { useAuth } from '../auth/AuthContext'
 
 export function BoardPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const isGuest = !user
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -52,6 +55,7 @@ export function BoardPage() {
 
   const onDragEnd = useCallback(
     async (result: DropResult) => {
+      if (isGuest) return
       const { source, destination, draggableId } = result
       if (!destination) return
       if (
@@ -94,7 +98,7 @@ export function BoardPage() {
         setProjects(snapshot)
       }
     },
-    [projects]
+    [projects, isGuest]
   )
 
   if (loading) {
@@ -123,14 +127,18 @@ export function BoardPage() {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="px-6 py-4 flex items-center justify-between">
+      <div className="px-6 py-4 flex items-center justify-between gap-3">
         <h1 className="text-xl font-semibold text-slate-800">{t('nav.board')}</h1>
-        <button
-          onClick={() => setCreating(true)}
-          className="px-3 py-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm"
-        >
-          {t('board.newProject')}
-        </button>
+        {isGuest ? (
+          <span className="text-xs text-slate-500 italic">{t('board.guestHint')}</span>
+        ) : (
+          <button
+            onClick={() => setCreating(true)}
+            className="px-3 py-1.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm"
+          >
+            {t('board.newProject')}
+          </button>
+        )}
       </div>
 
       <div className="flex-1 min-h-0 px-6 pb-6">
@@ -142,13 +150,14 @@ export function BoardPage() {
                 stage={stage}
                 projects={grouped[stage]}
                 onCardClick={p => navigate(`/projects/${p.id}`)}
+                dragDisabled={isGuest}
               />
             ))}
           </div>
         </DragDropContext>
       </div>
 
-      {creating && <CreateProjectModal onClose={() => setCreating(false)} />}
+      {creating && !isGuest && <CreateProjectModal onClose={() => setCreating(false)} />}
     </div>
   )
 }

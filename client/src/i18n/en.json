@@ -7,7 +7,9 @@
     "board": "Board",
     "members": "Team",
     "language": "Language",
-    "logout": "Log out"
+    "logout": "Log out",
+    "login": "Sign in",
+    "guest": "Guest"
   },
   "stage": {
     "Sketch": "Sketch",
@@ -36,7 +38,8 @@
     "loading": "Loading...",
     "empty": "Drop cards here",
     "loadError": "Couldn't load projects. Make sure the API is running on {{url}}.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "guestHint": "You're viewing as a guest — sign in to create and edit"
   },
   "card": {
     "client": "Client",
@@ -83,7 +86,9 @@
     "comments": "Comments",
     "noComments": "No comments yet.",
     "commentPlaceholder": "Write a comment...",
-    "post": "Post comment"
+    "post": "Post comment",
+    "guestBanner": "You're viewing this project as a guest. Sign in to edit.",
+    "loginToComment": "Sign in to leave a comment →"
   },
   "members": {
     "title": "Team",
@@ -111,7 +116,8 @@
     "demoHint": "Demo accounts:",
     "demoAdmin": "admin / admin (admin)",
     "demoManager": "olena / pass (manager)",
-    "demoUser": "taras / pass (user)"
+    "demoUser": "taras / pass (user)",
+    "continueAsGuest": "Continue as guest →"
   },
   "common": {
     "delete": "Delete",

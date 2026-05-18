@@ -14,9 +14,10 @@ interface Props {
   stage: Stage
   projects: Project[]
   onCardClick: (project: Project) => void
+  dragDisabled?: boolean
 }
 
-export function Column({ stage, projects, onCardClick }: Props) {
+export function Column({ stage, projects, onCardClick, dragDisabled = false }: Props) {
   const { t } = useTranslation()
 
   return (
@@ -55,7 +56,12 @@ export function Column({ stage, projects, onCardClick }: Props) {
             )}
 
             {projects.map((p, index) => (
-              <Draggable key={p.id} draggableId={String(p.id)} index={index}>
+              <Draggable
+                key={p.id}
+                draggableId={String(p.id)}
+                index={index}
+                isDragDisabled={dragDisabled}
+              >
                 {(prov, snap) => (
                   <div
                     ref={prov.innerRef}

@@ -17,6 +17,7 @@ public class MembersController : ControllerBase
     public MembersController(AppDbContext db) => _db = db;
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetAll()
     {
         var members = await _db.Members
