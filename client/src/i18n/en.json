@@ -1,0 +1,120 @@
+{
+  "app": {
+    "title": "Arch Kanban",
+    "subtitle": "Kanban for an architecture studio"
+  },
+  "nav": {
+    "board": "Board",
+    "members": "Team",
+    "language": "Language",
+    "logout": "Log out"
+  },
+  "stage": {
+    "Sketch": "Sketch",
+    "ClientApproval": "Client approval",
+    "Drawings": "Drawings",
+    "Done": "Done"
+  },
+  "role": {
+    "Architect": "Architect",
+    "Designer": "Designer",
+    "Constructor": "Constructor"
+  },
+  "priority": {
+    "Low": "Low",
+    "Medium": "Medium",
+    "High": "High",
+    "Urgent": "Urgent"
+  },
+  "access": {
+    "User": "User",
+    "Manager": "Manager",
+    "Admin": "Admin"
+  },
+  "board": {
+    "newProject": "+ New project",
+    "loading": "Loading...",
+    "empty": "Drop cards here",
+    "loadError": "Couldn't load projects. Make sure the API is running on {{url}}.",
+    "retry": "Try again"
+  },
+  "card": {
+    "client": "Client",
+    "due": "Due",
+    "attachments": "Files",
+    "noClient": "No client",
+    "members": "Members",
+    "priority": "Priority"
+  },
+  "create": {
+    "title": "New project",
+    "titleLabel": "Title",
+    "stageLabel": "Column",
+    "create": "Create",
+    "cancel": "Cancel"
+  },
+  "detail": {
+    "back": "← Back to board",
+    "save": "Save",
+    "saved": "Saved",
+    "delete": "Delete project",
+    "deleteConfirm": "Delete this project permanently?",
+    "loadError": "Failed to load the project",
+    "notFound": "Project not found",
+    "title": "Title",
+    "issuer": "Issuer",
+    "stage": "Column",
+    "priority": "Priority",
+    "dueDate": "Due date",
+    "createdAt": "Created",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe the project, key requirements, special considerations...",
+    "members": "Assignees",
+    "membersAssigned": "Assigned",
+    "addAssignee": "+ Add assignee",
+    "noAssignees": "No assignees yet",
+    "noAvailableMembers": "All members already assigned",
+    "noMembersHint": "Add people in the \"Team\" page first.",
+    "attachments": "Drawing links",
+    "addAttachment": "+ Add link",
+    "attachmentLabel": "Label",
+    "attachmentUrl": "URL",
+    "open": "Open",
+    "comments": "Comments",
+    "noComments": "No comments yet.",
+    "commentPlaceholder": "Write a comment...",
+    "post": "Post comment"
+  },
+  "members": {
+    "title": "Team",
+    "name": "Name",
+    "role": "Role",
+    "username": "Username",
+    "password": "Password",
+    "access": "Access level",
+    "add": "Add user",
+    "empty": "Nobody here yet. Add the first member.",
+    "deleteConfirm": "Delete \"{{name}}\"?",
+    "placeholderName": "Full name",
+    "placeholderUsername": "e.g. olena",
+    "placeholderPassword": "at least 4 chars",
+    "onlyManagersCanAdd": "Only admins and managers can add users."
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Sign in to continue",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "error": "Wrong username or password",
+    "demoHint": "Demo accounts:",
+    "demoAdmin": "admin / admin (admin)",
+    "demoManager": "olena / pass (manager)",
+    "demoUser": "taras / pass (user)"
+  },
+  "common": {
+    "delete": "Delete",
+    "add": "Add"
+  }
+}

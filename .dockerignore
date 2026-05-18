@@ -1,0 +1,23 @@
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/.vite
+**/.cache
+**/.vs
+
+# Local artifacts that should never go into the image
+server/archkanban.db
+server/archkanban.db-*
+client/.env.local
+client/.env
+
+# VCS / docs (not needed inside the image)
+.git
+.github
+.cursor
+*.md
+.gitignore
+.dockerignore
+Dockerfile
+render.yaml

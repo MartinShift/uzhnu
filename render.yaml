@@ -1,0 +1,19 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# After pushing to GitHub, go to Render → New → Blueprint → pick this repo.
+# Render reads this file automatically and provisions the service.
+
+services:
+  - type: web
+    name: arch-kanban
+    runtime: docker
+    plan: free
+    region: frankfurt          # closest free region for Ukraine
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Database__Provider
+        value: Sqlite
+      - key: ConnectionStrings__DefaultConnection
+        value: Data Source=archkanban.db

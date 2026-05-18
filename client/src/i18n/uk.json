@@ -1,0 +1,120 @@
+{
+  "app": {
+    "title": "Arch Kanban",
+    "subtitle": "Канбан для архітектурного бюро"
+  },
+  "nav": {
+    "board": "Дошка",
+    "members": "Команда",
+    "language": "Мова",
+    "logout": "Вийти"
+  },
+  "stage": {
+    "Sketch": "Ескіз",
+    "ClientApproval": "Погодження замовником",
+    "Drawings": "Розробка креслень",
+    "Done": "Готово"
+  },
+  "role": {
+    "Architect": "Архітектор",
+    "Designer": "Дизайнер",
+    "Constructor": "Конструктор"
+  },
+  "priority": {
+    "Low": "Низький",
+    "Medium": "Середній",
+    "High": "Високий",
+    "Urgent": "Терміновий"
+  },
+  "access": {
+    "User": "Користувач",
+    "Manager": "Менеджер",
+    "Admin": "Адміністратор"
+  },
+  "board": {
+    "newProject": "+ Новий проєкт",
+    "loading": "Завантаження...",
+    "empty": "Перетягніть сюди картки",
+    "loadError": "Не вдалось завантажити проєкти. Перевірте, що сервер запущено на {{url}}.",
+    "retry": "Спробувати ще"
+  },
+  "card": {
+    "client": "Замовник",
+    "due": "Дедлайн",
+    "attachments": "Файли",
+    "noClient": "Без замовника",
+    "members": "Учасники",
+    "priority": "Пріоритет"
+  },
+  "create": {
+    "title": "Новий проєкт",
+    "titleLabel": "Назва",
+    "stageLabel": "Колонка",
+    "create": "Створити",
+    "cancel": "Скасувати"
+  },
+  "detail": {
+    "back": "← До дошки",
+    "save": "Зберегти",
+    "saved": "Збережено",
+    "delete": "Видалити проєкт",
+    "deleteConfirm": "Видалити цей проєкт назавжди?",
+    "loadError": "Не вдалось завантажити проєкт",
+    "notFound": "Проєкт не знайдено",
+    "title": "Назва",
+    "issuer": "Замовник",
+    "stage": "Колонка",
+    "priority": "Пріоритет",
+    "dueDate": "Дедлайн",
+    "createdAt": "Створено",
+    "description": "Опис",
+    "descriptionPlaceholder": "Опишіть проєкт, ключові вимоги, особливості...",
+    "members": "Виконавці",
+    "membersAssigned": "Призначені",
+    "addAssignee": "+ Додати виконавця",
+    "noAssignees": "Виконавців ще немає",
+    "noAvailableMembers": "Всі учасники вже призначені",
+    "noMembersHint": "Спочатку додайте людей у розділі \"Команда\".",
+    "attachments": "Посилання на креслення",
+    "addAttachment": "+ Додати посилання",
+    "attachmentLabel": "Підпис",
+    "attachmentUrl": "URL",
+    "open": "Відкрити",
+    "comments": "Коментарі",
+    "noComments": "Коментарів ще немає.",
+    "commentPlaceholder": "Напишіть коментар...",
+    "post": "Додати коментар"
+  },
+  "members": {
+    "title": "Команда",
+    "name": "Ім'я",
+    "role": "Роль",
+    "username": "Логін",
+    "password": "Пароль",
+    "access": "Рівень доступу",
+    "add": "Додати користувача",
+    "empty": "Поки що нікого немає. Додайте першого учасника.",
+    "deleteConfirm": "Видалити \"{{name}}\"?",
+    "placeholderName": "Ім'я та прізвище",
+    "placeholderUsername": "напр. olena",
+    "placeholderPassword": "мінімум 4 символи",
+    "onlyManagersCanAdd": "Лише адміністратори та менеджери можуть додавати користувачів."
+  },
+  "login": {
+    "title": "Вхід",
+    "subtitle": "Увійдіть, щоб продовжити",
+    "username": "Логін",
+    "password": "Пароль",
+    "submit": "Увійти",
+    "submitting": "Вхід...",
+    "error": "Неправильний логін або пароль",
+    "demoHint": "Демо-облікові записи:",
+    "demoAdmin": "admin / admin (адмін)",
+    "demoManager": "olena / pass (менеджер)",
+    "demoUser": "taras / pass (користувач)"
+  },
+  "common": {
+    "delete": "Видалити",
+    "add": "Додати"
+  }
+}
