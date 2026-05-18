@@ -185,11 +185,11 @@ export function ProjectDetailPage() {
 
   return (
     <div className="flex-1 overflow-y-auto bg-slate-50">
-      <div className="mx-auto max-w-5xl px-6 py-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="mx-auto max-w-5xl px-3 sm:px-6 py-4 sm:py-6">
+        <div className="flex items-center justify-between mb-4 gap-3">
           <Link
             to="/"
-            className="text-sm font-medium text-slate-600 hover:text-brand-700"
+            className="text-sm font-medium text-slate-600 hover:text-brand-700 whitespace-nowrap"
           >
             {t('detail.back')}
           </Link>
@@ -201,7 +201,7 @@ export function ProjectDetailPage() {
               <button
                 onClick={handleSave}
                 disabled={saving || !title.trim()}
-                className="px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50"
+                className="px-4 py-2 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md disabled:opacity-50 whitespace-nowrap"
               >
                 {t('detail.save')}
               </button>
@@ -210,20 +210,26 @@ export function ProjectDetailPage() {
         </div>
 
         {isGuest && (
-          <div className="mb-4 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-md px-4 py-2.5">
+          <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 bg-amber-50 border border-amber-200 rounded-md px-4 py-2.5">
             <p className="text-sm text-amber-800">{t('detail.guestBanner')}</p>
             <Link
               to={`/login?next=${encodeURIComponent(`/projects/${projectId}`)}`}
-              className="shrink-0 px-3 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md"
+              className="shrink-0 self-start sm:self-auto px-3 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-md"
             >
               {t('nav.login')}
             </Link>
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-          <div className="space-y-6">
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        {/*
+          Flat grid layout — on mobile cards stack in document order
+          (title → meta → members → [delete] → attachments → comments)
+          so key project meta is visible without scrolling past long content.
+          On lg+ explicit row-start/col-start places them into the classic
+          2-column kanban detail view.
+        */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-x-6 lg:gap-y-6">
+            <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-sm lg:row-start-1 lg:col-start-1">
               <input
                 value={title}
                 onChange={e => setTitle(e.target.value)}
@@ -244,7 +250,7 @@ export function ProjectDetailPage() {
               </Field>
             </div>
 
-            <Section label={t('detail.attachments')}>
+            <Section label={t('detail.attachments')} className="lg:row-start-2 lg:col-start-1">
               {project.attachments.length === 0 && (
                 <p className="text-xs text-slate-400 italic mb-3">—</p>
               )}
@@ -301,7 +307,7 @@ export function ProjectDetailPage() {
               )}
             </Section>
 
-            <Section label={t('detail.comments')}>
+            <Section label={t('detail.comments')} className="lg:row-start-3 lg:col-start-1">
               {project.comments.length === 0 && (
                 <p className="text-xs text-slate-400 italic mb-3">{t('detail.noComments')}</p>
               )}
@@ -365,10 +371,8 @@ export function ProjectDetailPage() {
                 </form>
               )}
             </Section>
-          </div>
 
-          <aside className="space-y-4">
-            <SidebarCard>
+            <SidebarCard className="lg:row-start-1 lg:col-start-2">
               <SidebarField label={t('detail.stage')}>
                 <select
                   value={stage}
@@ -422,7 +426,7 @@ export function ProjectDetailPage() {
               </div>
             </SidebarCard>
 
-            <SidebarCard>
+            <SidebarCard className="lg:row-start-2 lg:col-start-2">
               <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">
                 {t('detail.members')}
               </div>
@@ -470,12 +474,11 @@ export function ProjectDetailPage() {
             {!isGuest && (
               <button
                 onClick={handleDelete}
-                className="w-full px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md border border-red-200"
+                className="w-full px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md border border-red-200 lg:row-start-3 lg:col-start-2 lg:self-start"
               >
                 {t('detail.delete')}
               </button>
             )}
-          </aside>
         </div>
       </div>
 
@@ -517,9 +520,11 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
+function Section({
+  label, children, className = '',
+}: { label: string; children: React.ReactNode; className?: string }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+    <div className={`bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-sm ${className}`}>
       <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-3">
         {label}
       </h2>
@@ -528,9 +533,11 @@ function Section({ label, children }: { label: string; children: React.ReactNode
   )
 }
 
-function SidebarCard({ children }: { children: React.ReactNode }) {
+function SidebarCard({
+  children, className = '',
+}: { children: React.ReactNode; className?: string }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+    <div className={`bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3 ${className}`}>
       {children}
     </div>
   )
