@@ -1,0 +1,89 @@
+
+graph ArchKanbanChen {
+  graph [bgcolor="white", splines=line, overlap=false,
+         nodesep=0.35, ranksep=0.65, pad=0.4, layout=neato,
+         fontname="Segoe UI", labelloc="t", fontsize=18,
+         label=<<B>Arch Kanban — ER diagram (Chen notation)</B>>];
+  node  [fontname="Segoe UI", fontsize=11];
+  edge  [fontname="Segoe UI", fontsize=10, color="#334155"];
+
+  // ---- Strong entities ----
+  Project [shape=box, style="filled,setlinewidth(1.6)", fillcolor="#dbeafe",
+           color="#1e3a8a", width=1.6, height=0.7, pos="0,0!"];
+  Member  [shape=box, style="filled,setlinewidth(1.6)", fillcolor="#dbeafe",
+           color="#1e3a8a", width=1.6, height=0.7, pos="8,0!"];
+
+  // ---- Weak entities (depend on Project) ----
+  Attachment [shape=box, peripheries=2, style="filled,setlinewidth(1.4)",
+              fillcolor="#fef3c7", color="#92400e",
+              width=1.6, height=0.7, pos="-3.2,-3.2!"];
+  Comment    [shape=box, peripheries=2, style="filled,setlinewidth(1.4)",
+              fillcolor="#fef3c7", color="#92400e",
+              width=1.6, height=0.7, pos="3.2,-3.2!"];
+
+  // ---- Relationships ----
+  works_on [shape=diamond, style="filled,setlinewidth(1.4)", fillcolor="#fde68a",
+            color="#92400e", label="works_on", width=1.6, height=0.9, pos="4,0!"];
+  contains [shape=diamond, peripheries=2, style="filled,setlinewidth(1.4)",
+            fillcolor="#fde68a", color="#92400e",
+            label="contains", width=1.4, height=0.8, pos="-1.6,-1.6!"];
+  receives [shape=diamond, peripheries=2, style="filled,setlinewidth(1.4)",
+            fillcolor="#fde68a", color="#92400e",
+            label="receives", width=1.4, height=0.8, pos="1.6,-1.6!"];
+
+  // ---- Key attributes (underlined PK) ----
+  P_Id    [shape=ellipse, style=filled, fillcolor="white", color="#1e3a8a",
+           label=<<U>Id</U>>, pos="-1.6,1.7!"];
+  P_Title [shape=ellipse, style=filled, fillcolor="white", color="#1e3a8a",
+           label="Title", pos="0,2.1!"];
+  P_Stage [shape=ellipse, style=filled, fillcolor="white", color="#1e3a8a",
+           label="Stage", pos="1.6,1.7!"];
+
+  M_Id       [shape=ellipse, style=filled, fillcolor="white", color="#1e3a8a",
+              label=<<U>Id</U>>, pos="6.4,1.7!"];
+  M_Username [shape=ellipse, style=filled, fillcolor="white", color="#1e3a8a",
+              label=<<U>Username</U>>, pos="8,2.1!"];
+  M_Role     [shape=ellipse, style=filled, fillcolor="white", color="#1e3a8a",
+              label="Role", pos="9.6,1.7!"];
+
+  A_Id    [shape=ellipse, style=filled, fillcolor="white", color="#92400e",
+           label=<<U>Id</U>>, pos="-4.8,-2.4!"];
+  A_Label [shape=ellipse, style=filled, fillcolor="white", color="#92400e",
+           label="Label", pos="-4.8,-3.8!"];
+  A_Url   [shape=ellipse, style=filled, fillcolor="white", color="#92400e",
+           label="Url", pos="-3.2,-4.4!"];
+
+  C_Id     [shape=ellipse, style=filled, fillcolor="white", color="#92400e",
+            label=<<U>Id</U>>, pos="4.8,-2.4!"];
+  C_Author [shape=ellipse, style=filled, fillcolor="white", color="#92400e",
+            label="Author", pos="4.8,-3.8!"];
+  C_Text   [shape=ellipse, style=filled, fillcolor="white", color="#92400e",
+            label="Text", pos="3.2,-4.4!"];
+
+  // ---- Attribute edges ----
+  Project -- P_Id;
+  Project -- P_Title;
+  Project -- P_Stage;
+
+  Member -- M_Id;
+  Member -- M_Username;
+  Member -- M_Role;
+
+  Attachment -- A_Id;
+  Attachment -- A_Label;
+  Attachment -- A_Url;
+
+  Comment -- C_Id;
+  Comment -- C_Author;
+  Comment -- C_Text;
+
+  // ---- Relationship edges with cardinalities ----
+  Project    -- works_on [label="M",  fontsize=12, fontcolor="#1e3a8a"];
+  works_on   -- Member   [label="N",  fontsize=12, fontcolor="#1e3a8a"];
+
+  Project    -- contains [label="1",  fontsize=12, fontcolor="#1e3a8a"];
+  contains   -- Attachment [label="N", fontsize=12, fontcolor="#1e3a8a"];
+
+  Project    -- receives [label="1",  fontsize=12, fontcolor="#1e3a8a"];
+  receives   -- Comment  [label="N",  fontsize=12, fontcolor="#1e3a8a"];
+}
